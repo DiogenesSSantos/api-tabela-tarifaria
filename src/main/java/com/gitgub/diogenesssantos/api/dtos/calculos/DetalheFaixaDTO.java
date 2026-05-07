@@ -1,4 +1,4 @@
-package com.gitgub.diogenesssantos.api.dtos;
+package com.gitgub.diogenesssantos.api.dtos.calculos;
 
 import java.math.BigDecimal;
 

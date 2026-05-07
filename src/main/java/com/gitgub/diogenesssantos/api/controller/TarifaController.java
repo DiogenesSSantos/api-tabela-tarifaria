@@ -1,7 +1,7 @@
 package com.gitgub.diogenesssantos.api.controller;
 
-import com.gitgub.diogenesssantos.api.dtos.CalculoRequestDTO;
-import com.gitgub.diogenesssantos.api.dtos.CalculoResponseDTO;
+import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoRequestDTO;
+import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoResponseDTO;
 import com.gitgub.diogenesssantos.api.service.CalculoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +19,7 @@ public class TarifaController {
 
     @PostMapping("/calculos")
     public ResponseEntity<CalculoResponseDTO> calcular(@RequestBody CalculoRequestDTO req) {
-        var resp = calculoService.calcular(req.categoria().name(), req.consumo());
+        var resp = calculoService.calcular(req.categoria(), req.consumo());
         return ResponseEntity.ok(resp);
     }
 
