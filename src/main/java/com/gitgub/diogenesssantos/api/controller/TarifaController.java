@@ -19,7 +19,8 @@ public class TarifaController {
 
     @PostMapping("/calculos")
     public ResponseEntity<CalculoResponseDTO> calcular(@RequestBody CalculoRequestDTO req) {
-        var resp = calculoService.calcular(req.categoria(), req.consumo());
+
+        var resp = calculoService.calcular(req);
         return ResponseEntity.ok(resp);
     }
 

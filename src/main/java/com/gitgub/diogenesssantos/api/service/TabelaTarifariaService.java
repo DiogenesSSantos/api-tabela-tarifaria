@@ -3,10 +3,7 @@ package com.gitgub.diogenesssantos.api.service;
 import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.CategoriaRequest;
 import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.FaixaRequest;
 import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaRequest;
-import com.gitgub.diogenesssantos.api.exception.CategoriaNomeException;
-import com.gitgub.diogenesssantos.api.exception.CategoriaNomeInvalidoException;
-import com.gitgub.diogenesssantos.api.exception.FaixaTarifariaException;
-import com.gitgub.diogenesssantos.api.exception.TabelaTarifariaException;
+import com.gitgub.diogenesssantos.api.exception.*;
 import com.gitgub.diogenesssantos.api.model.Categoria;
 import com.gitgub.diogenesssantos.api.model.FaixaTarifaria;
 import com.gitgub.diogenesssantos.api.model.TabelaTarifaria;
@@ -17,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Comparator.reverseOrder;
 
 @Service
 public class TabelaTarifariaService {
@@ -62,19 +62,19 @@ public class TabelaTarifariaService {
     }
 
 
-    public List<TabelaTarifaria> listarTabelas() {
-        return tabelaRepo.findAll();
+    public List<TabelaTarifaria> buscarTodasTabelas() {
+        return tabelaRepo.findAll().stream()
+                .sorted(Comparator.comparing(TabelaTarifaria::getDataVigencia)
+                        .reversed())
+                .toList();
 
     }
 
     public List<TabelaTarifaria> salvarTabelaEmLote(List<TabelaTarifariaRequest> tabelaTarifariaRequests) {
         List<TabelaTarifaria> tabelaTarifariaList = new ArrayList<>();
 
-        Iterator<TabelaTarifariaRequest> iterator = tabelaTarifariaRequests.iterator();
-        while (iterator.hasNext()) {
-            var tabelaTarifaria = iterator.next();
+        for (var tabelaTarifaria : tabelaTarifariaRequests) {
             var tabelaTarSalvaBD = salvarTabela(tabelaTarifaria);
-
             tabelaTarifariaList.add(tabelaTarSalvaBD);
         }
 
@@ -90,12 +90,39 @@ public class TabelaTarifariaService {
 
     private void validaFaixasTabelaTarifaria(TabelaTarifariaRequest tabelaTarifiaria) {
         Iterator<CategoriaRequest> iterator = tabelaTarifiaria.categorias().iterator();
+        Integer inicio = 0;
+        Integer fim = 0;
+        Integer ordem = 0;
+
         while (iterator.hasNext()) {
+            boolean isPrimeiro = true;
             var categoria = iterator.next();
             var categoriaNome = categoria.nome();
             var faixas = categoria.faixas();
-            if (faixas.isEmpty()) throw new FaixaTarifariaException("Obrigatória conter uma faixa tarifaria." ,
-                    categoriaNome);
+            if (faixas.isEmpty()) throw new FaixaTarifariaException("Erro na criação da faixa tarifaria da tabela "
+                    + tabelaTarifiaria.nome(), categoriaNome);
+
+            for (var faixa : faixas) {
+                if (isPrimeiro) {
+                    inicio = faixa.inicio();
+                    fim = faixa.fim();
+                    ordem = faixa.ordem();
+                    isPrimeiro = false;
+                    continue;
+                }
+
+                if (faixa.inicio() <= inicio)
+                    throw new FaixaTarifariaValidacaoCamposException("Erro no campo inicio da categoria ", categoriaNome);
+                if (faixa.fim() <= fim)
+                    throw new FaixaTarifariaValidacaoCamposException("Erro no campo fim da categoria ", categoriaNome);
+                if (faixa.ordem() <= ordem)
+                    throw new FaixaTarifariaValidacaoCamposException("Erro no campo ordem da categoria ", categoriaNome);
+
+                inicio = faixa.inicio();
+                fim = faixa.fim();
+                ordem = faixa.ordem();
+
+            }
 
         }
 
@@ -104,8 +131,7 @@ public class TabelaTarifariaService {
 
     private static void validaCategoriaTabelaTarafia(TabelaTarifariaRequest tabelaTarifiaria) {
         if (tabelaTarifiaria.categorias().size() < 4) {
-            throw new TabelaTarifariaException("A tabelaTarifaria tabelaTarifiaria" +
-                    "uer todas categorias de cobrança.");
+            throw new TabelaTarifariaException("Erro tarefa", tabelaTarifiaria.nome());
         }
 
         Iterator<CategoriaRequest> iterator = tabelaTarifiaria
@@ -128,4 +154,18 @@ public class TabelaTarifariaService {
     }
 
 
+    public void deletarPorId(Long id) {
+        tabelaRepo.findById(id)
+                .ifPresent(tabelaRepo::delete);
+    }
+
+    public TabelaTarifaria buscarPorId(Long id) {
+        return tabelaRepo.findById(id)
+                .orElseThrow(() ->
+                        new TabelaTarifariaNaoLocalizadaException(
+                                String.format("A tabela tarifaria de id %d " +
+                                        "não existe no banco de dados.", id)));
+
+
+    }
 }

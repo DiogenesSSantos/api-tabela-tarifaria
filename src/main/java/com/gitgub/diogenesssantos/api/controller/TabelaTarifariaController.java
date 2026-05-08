@@ -18,6 +18,18 @@ public class TabelaTarifariaController {
         this.service = service;
     }
 
+    @GetMapping
+    public ResponseEntity<List<TabelaTarifaria>> listarTabelas() {
+        return ResponseEntity.ok(service.buscarTodasTabelas());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TabelaTarifaria> buscarPorId(@PathVariable (name = "id", required =  true) Long id) {
+        var tabelaTarifa = service.buscarPorId(id);
+        return ResponseEntity.ok().body(tabelaTarifa);
+    }
+
+
     @PostMapping
     public ResponseEntity<TabelaTarifaria> criarTabela(@RequestBody TabelaTarifariaRequest tabelaTarifariaRequest) {
         TabelaTarifaria tabela = service.salvarTabela(tabelaTarifariaRequest);
@@ -31,12 +43,10 @@ public class TabelaTarifariaController {
         return ResponseEntity.ok(tabela);
     }
 
-
-
-
-    @GetMapping
-    public ResponseEntity<List<TabelaTarifaria>> listarTabelas() {
-        return ResponseEntity.ok(service.listarTabelas());
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletaTabelaPorId(@PathVariable (name = "id", required =  true) Long id) {
+        service.deletarPorId(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
