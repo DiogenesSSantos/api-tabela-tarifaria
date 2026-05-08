@@ -2,8 +2,6 @@ FROM eclipse-temurin:21-jdk
 
 ARG APP_PROFILE=prod
 ENV SPRING_PROFILES_ACTIVE=${APP_PROFILE}
-
-# Copiar aplicação
 COPY target/*.jar /app/app.jar
 
 # Instalar PostgreSQL e Supervisor
@@ -11,7 +9,6 @@ RUN apt-get update && \
     apt-get install -y postgresql postgresql-contrib supervisor && \
     rm -rf /var/lib/apt/lists/*
 
-# Criar diretórios e inicializar cluster do Postgres
 RUN mkdir -p /var/lib/postgresql/data /app && \
     chown -R postgres:postgres /var/lib/postgresql
 

@@ -87,41 +87,54 @@ public class TabelaTarifariaService {
 
     private void validaFaixasTabelaTarifaria(TabelaTarifariaRequestDTO tabelaTarifiaria) {
         Iterator<CategoriaRequestDTO> iterator = tabelaTarifiaria.categorias().iterator();
-        Integer inicio = 0;
-        Integer fim = 0;
-        Integer ordem = 0;
 
         while (iterator.hasNext()) {
-            boolean isPrimeiro = true;
             var categoria = iterator.next();
             var categoriaNome = categoria.nome();
             var faixas = categoria.faixas();
-            if (faixas.isEmpty()) throw new FaixaTarifariaException("Erro na criação da faixa tarifaria da tabela "
-                    + tabelaTarifiaria.nome(), categoriaNome);
+
+            if (faixas.isEmpty())
+                throw new FaixaTarifariaException(
+                        "Erro na criação da faixa tarifaria da tabela " + tabelaTarifiaria.nome(),
+                        categoriaNome
+                );
+
+            Integer fimAnterior = null;
+            Integer ordemAnterior = null;
 
             for (var faixa : faixas) {
-                if (isPrimeiro) {
-                    inicio = faixa.inicio();
-                    fim = faixa.fim();
-                    ordem = faixa.ordem();
-                    isPrimeiro = false;
-                    continue;
+                int inicio = faixa.inicio();
+                int fim = faixa.fim();
+                int ordem = faixa.ordem();
+
+                // 1. fim deve ser estritamente maior que inicio
+                if (fim <= inicio)
+                    throw new FaixaTarifariaValidacaoCamposException(
+                            "Erro: fim deve ser maior que inicio na categoria ", categoriaNome
+                    );
+
+                if (ordemAnterior != null && ordem <= ordemAnterior)
+                    throw new FaixaTarifariaValidacaoCamposException(
+                            "Erro no campo ordem da categoria ", categoriaNome
+                    );
+
+                if (fimAnterior == null) {
+                    if (inicio != 0)
+                        throw new FaixaTarifariaValidacaoCamposException(
+                                "Erro: a primeira faixa deve começar com inicio = 0 na categoria ", categoriaNome
+                        );
+                } else {
+                    if (inicio != fimAnterior + 1)
+                        throw new FaixaTarifariaValidacaoCamposException(
+                                "Erro no campo inicio : o inicio da faixa atual deve ser  > que fim da faixa anterior pelo menos +1 na categoria ", categoriaNome
+                        );
                 }
 
-                if (faixa.inicio() <= inicio)
-                    throw new FaixaTarifariaValidacaoCamposException("Erro no campo inicio da categoria ", categoriaNome);
-                if (faixa.fim() <= fim)
-                    throw new FaixaTarifariaValidacaoCamposException("Erro no campo fim da categoria ", categoriaNome);
-                if (faixa.ordem() <= ordem)
-                    throw new FaixaTarifariaValidacaoCamposException("Erro no campo ordem da categoria ", categoriaNome);
-
-                inicio = faixa.inicio();
-                fim = faixa.fim();
-                ordem = faixa.ordem();
-
+                fimAnterior = fim;
+                ordemAnterior = ordem;
             }
-
         }
+
 
     }
 

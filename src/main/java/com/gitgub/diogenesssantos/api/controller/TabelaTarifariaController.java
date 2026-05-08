@@ -1,5 +1,6 @@
 package com.gitgub.diogenesssantos.api.controller;
 
+import com.gitgub.diogenesssantos.api.docs.TabelaTarifariaDocumentacaoOpenAPI;
 import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaRequestDTO;
 import com.gitgub.diogenesssantos.api.model.TabelaTarifaria;
 import com.gitgub.diogenesssantos.api.service.TabelaTarifariaService;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tabelas-tarifarias")
-public class TabelaTarifariaController {
+public class TabelaTarifariaController implements TabelaTarifariaDocumentacaoOpenAPI {
 
     private final TabelaTarifariaService service;
 

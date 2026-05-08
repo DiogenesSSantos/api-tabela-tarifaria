@@ -1,5 +1,6 @@
 package com.gitgub.diogenesssantos.api.controller;
 
+import com.gitgub.diogenesssantos.api.docs.CalculoDocumentacaoOpenAPI;
 import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoRequestDTO;
 import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoResponseDTO;
 import com.gitgub.diogenesssantos.api.service.CalculoService;
@@ -11,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-public class TarifaController {
+public class CalculoController implements CalculoDocumentacaoOpenAPI {
 
     private final CalculoService calculoService;
-    public TarifaController(CalculoService calculoService) {
+    public CalculoController(CalculoService calculoService) {
         this.calculoService = calculoService; }
 
     @PostMapping("/calculos")
