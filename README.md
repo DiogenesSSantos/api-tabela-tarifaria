@@ -139,35 +139,9 @@ src/
 
 
 
-**docker**
+**docker apenas rode o comando no seu terminal (autoconfigurado para teste, não produção)**
 ```
-docker run -p 8080:8080 diogenesssantos/facilittecnologia:1.0
-```
-
-**docker-compose**
-```
-    version: "3.9"
-services:
-  api:
-    build: .
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/tarifadb
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: pass
-    depends_on:
-      - db
-
-  db:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: tarifadb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-    ports:
-      - "5432:5432"
-
+docker run -p 8080:8080 -p 5432:5432 diogenesssantos/api-tabela-tarifaria-ras
 ```
 
 
