@@ -52,7 +52,7 @@ A solução é totalmente parametrizável: todas as faixas e valores ficam no ba
 
 ---
 
-## 📐 Arquitetura do Projeto - em construção.
+## 📐 Arquitetura do Projeto
 ```tree
 src/
  ├── main/
