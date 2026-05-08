@@ -2,7 +2,7 @@ package com.gitgub.diogenesssantos.api.dtos.tabelatarifaria;
 
 import java.util.List;
 
-public record CategoriaRequest(
+public record CategoriaRequestDTO(
         String nome,
-        List<FaixaRequest> faixas
+        List<FaixaRequestDTO> faixas
 ) {}

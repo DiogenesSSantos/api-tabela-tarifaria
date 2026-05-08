@@ -1,8 +1,8 @@
 package com.gitgub.diogenesssantos.api.service;
 
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.CategoriaRequest;
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.FaixaRequest;
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaRequest;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.CategoriaRequestDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.FaixaRequestDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaRequestDTO;
 import com.gitgub.diogenesssantos.api.exception.*;
 import com.gitgub.diogenesssantos.api.model.Categoria;
 import com.gitgub.diogenesssantos.api.model.FaixaTarifaria;
@@ -14,9 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.Comparator.reverseOrder;
 
 @Service
 public class TabelaTarifariaService {
@@ -30,7 +27,7 @@ public class TabelaTarifariaService {
     }
 
     @Transactional
-    public TabelaTarifaria salvarTabela(TabelaTarifariaRequest tabelaTarifiaria) {
+    public TabelaTarifaria salvarTabela(TabelaTarifariaRequestDTO tabelaTarifiaria) {
         validaTabelaTarifariaRequest(tabelaTarifiaria);
 
         TabelaTarifaria tabela = new TabelaTarifaria();
@@ -41,12 +38,12 @@ public class TabelaTarifariaService {
         tabela.setAtivo(true);
         tabelaRepo.save(tabela);
 
-        for (CategoriaRequest catReq : tabelaTarifiaria
+        for (CategoriaRequestDTO catReq : tabelaTarifiaria
                 .categorias()) {
 
             Categoria categoria = Categoria.valueOf(catReq.nome().toUpperCase());
 
-            for (FaixaRequest faixaReq : catReq.faixas()) {
+            for (FaixaRequestDTO faixaReq : catReq.faixas()) {
                 FaixaTarifaria faixa = new FaixaTarifaria();
                 faixa.setTabela(tabela);
                 faixa.setCategoria(categoria);
@@ -70,7 +67,7 @@ public class TabelaTarifariaService {
 
     }
 
-    public List<TabelaTarifaria> salvarTabelaEmLote(List<TabelaTarifariaRequest> tabelaTarifariaRequests) {
+    public List<TabelaTarifaria> salvarTabelaEmLote(List<TabelaTarifariaRequestDTO> tabelaTarifariaRequests) {
         List<TabelaTarifaria> tabelaTarifariaList = new ArrayList<>();
 
         for (var tabelaTarifaria : tabelaTarifariaRequests) {
@@ -83,13 +80,13 @@ public class TabelaTarifariaService {
     }
 
 
-    private void validaTabelaTarifariaRequest(TabelaTarifariaRequest tabelaTarifiaria) {
+    private void validaTabelaTarifariaRequest(TabelaTarifariaRequestDTO tabelaTarifiaria) {
         validaCategoriaTabelaTarafia(tabelaTarifiaria);
         validaFaixasTabelaTarifaria(tabelaTarifiaria);
     }
 
-    private void validaFaixasTabelaTarifaria(TabelaTarifariaRequest tabelaTarifiaria) {
-        Iterator<CategoriaRequest> iterator = tabelaTarifiaria.categorias().iterator();
+    private void validaFaixasTabelaTarifaria(TabelaTarifariaRequestDTO tabelaTarifiaria) {
+        Iterator<CategoriaRequestDTO> iterator = tabelaTarifiaria.categorias().iterator();
         Integer inicio = 0;
         Integer fim = 0;
         Integer ordem = 0;
@@ -129,12 +126,12 @@ public class TabelaTarifariaService {
     }
 
 
-    private static void validaCategoriaTabelaTarafia(TabelaTarifariaRequest tabelaTarifiaria) {
+    private static void validaCategoriaTabelaTarafia(TabelaTarifariaRequestDTO tabelaTarifiaria) {
         if (tabelaTarifiaria.categorias().size() < 4) {
             throw new TabelaTarifariaException("Erro tarefa", tabelaTarifiaria.nome());
         }
 
-        Iterator<CategoriaRequest> iterator = tabelaTarifiaria
+        Iterator<CategoriaRequestDTO> iterator = tabelaTarifiaria
                 .categorias().iterator();
         while (iterator.hasNext()) {
             var categoria = iterator.next();

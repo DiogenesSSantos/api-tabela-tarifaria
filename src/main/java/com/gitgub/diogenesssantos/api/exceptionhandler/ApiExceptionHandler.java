@@ -1,4 +1,4 @@
-package com.gitgub.diogenesssantos.api.exceptiohandler;
+package com.gitgub.diogenesssantos.api.exceptionhandler;
 
 
 import com.gitgub.diogenesssantos.api.exception.*;
