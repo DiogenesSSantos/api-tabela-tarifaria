@@ -29,6 +29,50 @@ public class ApiExceptionHandler {
     }
 
 
+    @ExceptionHandler(TabelaTarifariaNullException.class)
+    public ResponseEntity<Error> tabelaTarifariaNullException(TabelaTarifariaNullException ex) {
+        var problema = new Error(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                "A tabela tarifaria não pode ser null",
+                TabelaTarifariaException.class.getSimpleName(),
+                LocalDateTime.now(),
+                null);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+
+    }
+
+
+    @ExceptionHandler(TabelaTarifariaNomeException.class)
+    public ResponseEntity<Error> TabelaTarifariaNomeException(TabelaTarifariaNomeException ex) {
+        var problema = new Error(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                "O nome não pode ser null ou vázio.",
+                TabelaTarifariaException.class.getSimpleName(),
+                LocalDateTime.now(),
+                null);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+
+    }
+
+    @ExceptionHandler(TabelaTarifariaDataVigenciaException.class)
+    public ResponseEntity<Error> tabelaTarifariaDataVigenciaException(TabelaTarifariaDataVigenciaException ex) {
+        var problema = new Error(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                "A data vigência não pode ser nula, passe uma data valida.",
+                TabelaTarifariaException.class.getSimpleName(),
+                LocalDateTime.now(),
+                null);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+
+    }
+
+
     @ExceptionHandler(CategoriaNomeException.class)
     public ResponseEntity<Error> categoriaNomeException(CategoriaNomeException ex) {
         var problema = new Error(
@@ -93,7 +137,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Error> faixaNaoCobreConsumoException(FaixaNaoCobreConsumoException ex) {
         var problema = new Error(
                 HttpStatus.BAD_REQUEST.value(),
-                String.format(ex.getMessage(),ex.getValorConsumo()),
+                String.format(ex.getMessage(), ex.getValorConsumo()),
                 String.format("O consumo informado não está associada uma faixa de cobrança da categoria %s.",
                         ex.getNomeCategoria()),
                 FaixaNaoCobreConsumoException.class.getSimpleName(),
@@ -118,7 +162,6 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
 
     }
-
 
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -147,7 +190,6 @@ public class ApiExceptionHandler {
 
         return ResponseEntity.badRequest().body(problemaPadrao);
     }
-
 
 
 }

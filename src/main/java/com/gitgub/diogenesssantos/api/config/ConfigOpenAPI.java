@@ -27,13 +27,6 @@ public class ConfigOpenAPI {
                         .url("https://github.com/DiogenesSSantos/api-tabela-tarifaria"));
     }
 
-    @Bean("tarifaGroupedOpenApi")
-    public GroupedOpenApi tarifaGroupedOpenApi() {
-        return GroupedOpenApi.builder()
-                .group("TarefaController")
-                .pathsToMatch("/api/tabelas-tarifarias/**")
-                .build();
-    }
 
     @Bean("calculoGroupedOpenApi")
     public GroupedOpenApi calculoGroupedOpenApi() {

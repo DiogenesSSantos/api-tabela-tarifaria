@@ -27,18 +27,18 @@ public class TabelaTarifariaService {
     }
 
     @Transactional
-    public TabelaTarifaria salvarTabela(TabelaTarifariaRequestDTO tabelaTarifiaria) {
-        validaTabelaTarifariaRequest(tabelaTarifiaria);
+    public TabelaTarifaria salvarTabela(TabelaTarifariaRequestDTO tabelaTarifaria) {
+        validaTabelaTarifariaRequest(tabelaTarifaria);
 
         TabelaTarifaria tabela = new TabelaTarifaria();
-        tabela.setNome(tabelaTarifiaria
+        tabela.setNome(tabelaTarifaria
                 .nome());
-        tabela.setDataVigencia(tabelaTarifiaria
+        tabela.setDataVigencia(tabelaTarifaria
                 .dataVigencia());
         tabela.setAtivo(true);
         tabelaRepo.save(tabela);
 
-        for (CategoriaRequestDTO catReq : tabelaTarifiaria
+        for (CategoriaRequestDTO catReq : tabelaTarifaria
                 .categorias()) {
 
             Categoria categoria = Categoria.valueOf(catReq.nome().toUpperCase());
@@ -80,13 +80,13 @@ public class TabelaTarifariaService {
     }
 
 
-    private void validaTabelaTarifariaRequest(TabelaTarifariaRequestDTO tabelaTarifiaria) {
-        validaCategoriaTabelaTarafia(tabelaTarifiaria);
-        validaFaixasTabelaTarifaria(tabelaTarifiaria);
+    private void validaTabelaTarifariaRequest(TabelaTarifariaRequestDTO tabelaTarifaria) {
+        validaCategoriaTabelaTarafia(tabelaTarifaria);
+        validaFaixasTabelaTarifaria(tabelaTarifaria);
     }
 
-    private void validaFaixasTabelaTarifaria(TabelaTarifariaRequestDTO tabelaTarifiaria) {
-        Iterator<CategoriaRequestDTO> iterator = tabelaTarifiaria.categorias().iterator();
+    private void validaFaixasTabelaTarifaria(TabelaTarifariaRequestDTO tabelaTarifaria) {
+        Iterator<CategoriaRequestDTO> iterator = tabelaTarifaria.categorias().iterator();
 
         while (iterator.hasNext()) {
             var categoria = iterator.next();
@@ -95,7 +95,7 @@ public class TabelaTarifariaService {
 
             if (faixas.isEmpty())
                 throw new FaixaTarifariaException(
-                        "Erro na criação da faixa tarifaria da tabela " + tabelaTarifiaria.nome(),
+                        "Erro na criação da faixa tarifaria da tabela " + tabelaTarifaria.nome(),
                         categoriaNome
                 );
 
@@ -126,7 +126,8 @@ public class TabelaTarifariaService {
                 } else {
                     if (inicio != fimAnterior + 1)
                         throw new FaixaTarifariaValidacaoCamposException(
-                                "Erro no campo inicio : o inicio da faixa atual deve ser  > que fim da faixa anterior pelo menos +1 na categoria ", categoriaNome
+                                "Erro no campo inicio : o inicio da faixa atual deve ser  " +
+                                        "> que fim da faixa anterior pelo menos +1 na categoria ", categoriaNome
                         );
                 }
 
@@ -139,12 +140,16 @@ public class TabelaTarifariaService {
     }
 
 
-    private static void validaCategoriaTabelaTarafia(TabelaTarifariaRequestDTO tabelaTarifiaria) {
-        if (tabelaTarifiaria.categorias().size() < 4) {
-            throw new TabelaTarifariaException("Erro tarefa", tabelaTarifiaria.nome());
+    private static void validaCategoriaTabelaTarafia(TabelaTarifariaRequestDTO tabelaTarifaria) {
+        validaCamposTabelaTarifaria(tabelaTarifaria);
+
+
+        if (tabelaTarifaria.categorias().size() < 4) {
+            throw new TabelaTarifariaException("Erro tarefa", tabelaTarifaria.nome());
         }
 
-        Iterator<CategoriaRequestDTO> iterator = tabelaTarifiaria
+
+        Iterator<CategoriaRequestDTO> iterator = tabelaTarifaria
                 .categorias().iterator();
         while (iterator.hasNext()) {
             var categoria = iterator.next();
@@ -160,6 +165,20 @@ public class TabelaTarifariaService {
 
             if (!validaNome) throw new
                     CategoriaNomeInvalidoException("A nome categoria inválido.", categoriaNome);
+        }
+    }
+
+    private static void validaCamposTabelaTarifaria(TabelaTarifariaRequestDTO tabelaTarifaria) {
+        if (tabelaTarifaria.categorias() == null) {
+            throw new TabelaTarifariaNullException("Erro na tabela tarifaria, categoria não pode ser null.");
+        }
+
+        if (tabelaTarifaria.nome() == null || tabelaTarifaria.nome().isBlank()) {
+            throw new TabelaTarifariaNullException("Erro na tabela tarifaria, o nome não pode ser null ou ser vázia.");
+        }
+
+        if (tabelaTarifaria.dataVigencia() == null) {
+            throw new TabelaTarifariaDataVigenciaException("Erro na tabela tarifaria, a data não pode ser null.");
         }
     }
 
