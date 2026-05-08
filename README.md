@@ -139,7 +139,9 @@ src/
 
 
 
-**docker apenas rode o comando no seu terminal (autoconfigurado para teste, não produção)**
+**Docker**
+
+*apenas rode o comando no seu terminal (autoconfigurado para teste, não produção)*
 ```
 docker run -p 8080:8080 -p 5432:5432 diogenesssantos/api-tabela-tarifaria-ras
 ```
