@@ -402,7 +402,7 @@ docker run -p 8080:8080 -p 5432:5432 diogenesssantos/api-tabela-tarifaria-ras
 
 ---
 
-**DELETE api/tabelas-tarifarias/{1}**
+**DELETE api/tabelas-tarifarias/{id}**
 ---
 *Resposta JSON*
 ```
