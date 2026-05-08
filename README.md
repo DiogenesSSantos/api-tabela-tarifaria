@@ -141,7 +141,7 @@ src/
 
 **Docker**
 
-*apenas rode o comando no seu terminal (autoconfigurado para teste, não produção)*
+*apenas rode o comando no seu terminal (autoconfigurado com a api executando na porta ``8080`` e o postgresql na porta ``5432`` para teste local, não produção)*
 ```
 docker run -p 8080:8080 -p 5432:5432 diogenesssantos/api-tabela-tarifaria-ras
 ```
