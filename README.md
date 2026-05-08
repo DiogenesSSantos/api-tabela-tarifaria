@@ -168,6 +168,7 @@ docker run -p 8080:8080 -p 5432:5432 diogenesssantos/api-tabela-tarifaria-ras
 | POST   | /api/tabelas-tarifarias/lote | Cria novas tabelas tarifarias a parti conjunto [ ] de uma requisições JSON. |
 | GET    | /api/tabelas-tarifarias      | Buscar todas as tabelas tarifarias.                                         |
 | GET    | /api/tabelas-tarifarias/{id} | Buscar tabela tarifaria a parti de um ``id``.                               |
+| DELETE | /api/tabelas-tarifarias/{id} | Deletar tabela tarifaria a parti de um ``id``.                              |
 
 
 ---
