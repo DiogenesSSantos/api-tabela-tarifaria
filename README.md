@@ -156,83 +156,37 @@ docker run -p 8080:8080 -p 5432:5432 diogenesssantos/api-tabela-tarifaria-ras
 👉 [http://localhost:8080/](http://localhost:8080) e o determinado end-point abaixo.
 
 
-> **⚠️ Atenção**
->
-> Obrigatório fazer o login para acessar os end-points, necessitando do token JWT para acesso aos end-points.
----
 
-**Faça uma requisição post http://localhost:8080/api/auth/login com o body abaixo, depois copie o JWT e 
-faça as requisições necessárias no end-points /tarefas.**
-```
-{
-  "nome": "facilit",
-  "senha": "123"
-}
-```
 
 ## ✨ End-Points
-| Método | Nome do endpoint     | Descrição                                                                            |
-|--------|----------------------|--------------------------------------------------------------------------------------|
-| POST   | /api/auth/login      | Login na api, obrigatório para todos end-points o token JWT.                         | 
-| POST   | /tarefas             | Cria uma nova tarefa.                                                                |
-| GET    | /tarefas             | Buscar todas tarefas registradas.                                                    | 
-| GET    | /tarefas/id/{id}     | Consulte informações de uma tarefa através de um `id`.                              | 
-| GET    | /tarefas/titulo      | Consulte informações de uma tarefa através de um `titulo`.                          |  
-| GET    | /tarefas/descricao   | Consulte informações de uma tarefa através de uma `descricao`.                      |  
-| ~~GET~~| ~~/tarefas/status~~  | ~~Buscar todas tarefas registrados por um `status`.~~                                |  
-| PATCH  | /tarefas/id/{id}     | Atualiza uma ou mais informação de uma determinada tarefa pelo `id`.                | 
-| PATCH  | /tarefas/titulo      | Atualiza uma ou mais informação de uma determinada tarefa pelo `titulo`.            | 
-| PATCH  | /tarefas/descricao   | Atualiza uma ou mais informação de uma determinada tarefa pela `descricao`.         | 
-| PATCH  | /tarefas/status/{id} | Atualiza campo status uma determinada tarefa pelo `id`, passando status atualizado. |
+| Método | Nome do endpoint             | Descrição                                                                   |
+|--------|------------------------------|-----------------------------------------------------------------------------|
+| POST   | /api/calculos                | Calcular tarifa  a parti de uma requisição JSON.                            | 
+| POST   | /api/tabelas-tarifarias      | Cria uma nova tabela tarifaria a parti de uma requisição JSON.              |
+| POST   | /api/tabelas-tarifarias/lote | Cria novas tabelas tarifarias a parti conjunto [ ] de uma requisições JSON. |
+| GET    | /api/tabelas-tarifarias      | Buscar todas as tabelas tarifarias.                                         |
+| GET    | /api/tabelas-tarifarias/{id} | Buscar tabela tarifaria a parti de um ``id``.                               |
+
 
 ---
-##  Decisões técnicas
-- **Spring Boot por produtividade e ecossistema.**
-- **H2 para o desafio; mas fácil troca para SQLite/Postgres ou mysql(roda os teste em um mysql com test-container).**
-- **JWT para autenticação stateless e compatibilidade com front-ends.**
-- **Lombok para reduzir boilerplate.**
-
----
-##  Limitações conhecidas
-- **H2 em memória não é adequado para produção; dados são voláteis.**
-- **Autenticação simples (usuário fixo) — não há cadastro/recuperação de senha.**
-- **Sem controle de permissões por usuário (qualquer usuário tem acesso a todas as tarefas, correto cada um visualizar a sua respectiva tarefa).**
-
----
-
-##  Utilização de IA (Copilot) no projeto ##
+##  Exemplos JSON para requisições, copie e utilize nas chamadas, teste comportamento errôneos  para ver as tratativas de  errors.
 
 
-- Configuração de ambiente, sem comprometer dados sensíveis. 
-- Criação de casos de teste.
-- Autocomplete e geração de código para teste com rapidez sem substituir a análise critica e testabilidade.
-- Leitura de problemas de stack trace, complexas para melhor entendimento e resolucionar o problema.
-- Refatoração e melhoria de legibilidade
+
+
+
+
+
 
 
 ---
 
+##  Melhorias e implementações futuras
+- **Implementação atualizar tabela tarifarias por id.**
+- **Implementação Autenticação para criação das tabelas tarifarias.**
+- **Implementação de valor fixo para consumos acimas da ultima faixa da tabela tarifaria correspondente.**
+- **cobertura completa de testes.**
 
-
-##  Melhorias
-- **Banco de dados mais seguro, robusto e independente (Mysql ou Postgres).**
-- **Endpoint para atribuir tarefa a usuário e histórico de mudanças e por quem foi alterada a tarefa.**
-- **Autenticação para apenas administradores e cargo de liderança posso criar tarefas.**
-
----
-
-##   Importar collection Postman a partir do OpenAPI 
-
-```
-Importar collection Postman a partir do OpenAPI
-
-1. Inicie a API localmente.
-2. No Postman: Import → Link → cole http://localhost:8080/v3/api-docs → Import.
-3. Execute POST /api/auth/login, copie o token e cole em `jwt`.
-4. Teste os endpoints protegidos com header Authorization: Bearer {{jwt}}.
-5. Para importar manualmente, copie o arquivo da raiz do projeto docs/openapi e use Import → Upload Files.
-
-```
 ---
 
 
@@ -246,6 +200,6 @@ Ela permite que você **visualize e teste todos os endpoints disponíveis**.
 
 ### O que você pode fazer na documentação
 
-- **Visualizar Endpoints:** Veja todos os endpoints da API, com seus métodos (GET, POST, PATCH), parâmetros e descrições.
+- **Visualizar Endpoints:** Veja todos os endpoints da API, com seus métodos (GET, POST), parâmetros e descrições.
 - **Testar Requisições:** Use a funcionalidade *Try it out* para enviar requisições e ver as respostas em tempo real.
 - **Consultar Schemas:** Entenda a estrutura das entidades (DTOs) utilizadas nas requisições e respostas.  
