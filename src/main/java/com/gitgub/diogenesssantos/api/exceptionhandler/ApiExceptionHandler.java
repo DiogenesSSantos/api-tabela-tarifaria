@@ -44,6 +44,22 @@ public class ApiExceptionHandler {
     }
 
 
+    @ExceptionHandler(TabelaTarifariaNaoAtivaException.class)
+    public ResponseEntity<Error> tabelaTarifariaNaoAtivaException(TabelaTarifariaNaoAtivaException ex) {
+        var problema = new Error(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                "Não existe nenhuma tabela tarifaria ativo no banco de dados, crie um tabela tarifaria.",
+                TabelaTarifariaException.class.getSimpleName(),
+                LocalDateTime.now(),
+                null);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+
+    }
+
+
+
     @ExceptionHandler(TabelaTarifariaNomeException.class)
     public ResponseEntity<Error> TabelaTarifariaNomeException(TabelaTarifariaNomeException ex) {
         var problema = new Error(

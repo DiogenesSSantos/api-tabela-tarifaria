@@ -6,6 +6,7 @@ CREATE TABLE tabela_faixa_tarifaria (
   fim INT NOT NULL,
   valor_unitario NUMERIC(12,2) NOT NULL,
   ordem INT NOT NULL,
+
   CONSTRAINT inicio_menor_fim CHECK (inicio < fim),
   CONSTRAINT chk_categoria_enum CHECK (categoria_id IN ('COMERCIAL','INDUSTRIAL','PARTICULAR','PUBLICO'))
 );

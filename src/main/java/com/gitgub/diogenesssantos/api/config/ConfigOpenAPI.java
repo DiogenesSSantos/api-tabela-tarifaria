@@ -28,7 +28,7 @@ public class ConfigOpenAPI {
     }
 
 
-    @Bean("calculoGroupedOpenApi")
+    @Bean("GlobalController")
     public GroupedOpenApi calculoGroupedOpenApi() {
         return GroupedOpenApi.builder()
                 .group("CalculoController")

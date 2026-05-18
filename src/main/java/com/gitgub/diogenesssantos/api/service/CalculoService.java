@@ -6,6 +6,7 @@ import com.gitgub.diogenesssantos.api.dtos.calculos.DetalheFaixaDTO;
 import com.gitgub.diogenesssantos.api.dtos.calculos.FaixaDTO;
 import com.gitgub.diogenesssantos.api.exception.CalculoRequestException;
 import com.gitgub.diogenesssantos.api.exception.FaixaNaoCobreConsumoException;
+import com.gitgub.diogenesssantos.api.exception.TabelaTarifariaNaoAtivaException;
 import com.gitgub.diogenesssantos.api.model.FaixaTarifaria;
 import com.gitgub.diogenesssantos.api.model.TabelaTarifaria;
 import com.gitgub.diogenesssantos.api.repository.FaixaTarifariaRepository;
@@ -26,6 +27,7 @@ public class CalculoService {
     public CalculoService(TabelaTarifariaRepository tabelaRepo, FaixaTarifariaRepository faixaRepo) {
         this.tabelaRepo = tabelaRepo;
         this.faixaRepo = faixaRepo;
+
     }
 
     @Transactional
@@ -36,7 +38,8 @@ public class CalculoService {
 
         TabelaTarifaria tabela = tabelaRepo.findByAtivoTrueOrderByDataVigenciaDesc()
                 .stream().findFirst()
-                .orElseThrow(() -> new IllegalStateException("Nenhuma tabela ativa"));
+                .orElseThrow(() ->
+                        new TabelaTarifariaNaoAtivaException("Nenhuma tabela tarifaria ativa não banco de dados."));
 
         List<FaixaTarifaria> faixas = faixaRepo.findByTabelaAndCategoriaOrderByOrdemAsc(tabela, categoria);
 
@@ -44,44 +47,43 @@ public class CalculoService {
         BigDecimal valorTotal = BigDecimal.ZERO;
         List<DetalheFaixaDTO> detalhamento = new ArrayList<>();
 
-        for (FaixaTarifaria f : faixas) {
+        for (FaixaTarifaria faixa : faixas) {
             if (restante <= 0) break;
 
-            int faixaInicio = f.getInicio();
-            int faixaFim = f.getFim();
-
-            // capacidade máxima da faixa
+            int faixaInicio = faixa.getInicio();
+            int faixaFim = faixa.getFim();
             int faixaCapacidade = faixaFim - faixaInicio;
-
-            // quanto realmente será cobrado nesta faixa
             int m3Cobrado = Math.min(restante, faixaCapacidade);
 
             if (m3Cobrado > 0) {
-                BigDecimal subtotal = f.getValorUnitario().multiply(BigDecimal.valueOf(m3Cobrado));
+                BigDecimal subtotal = faixa.getValorUnitario().multiply(BigDecimal.valueOf(m3Cobrado));
                 valorTotal = valorTotal.add(subtotal);
-
                 detalhamento.add(new DetalheFaixaDTO(
                         new FaixaDTO(faixaInicio, faixaFim),
                         m3Cobrado,
-                        f.getValorUnitario(),
+                        faixa.getValorUnitario(),
                         subtotal
                 ));
 
                 restante -= m3Cobrado;
+
             }
         }
 
         if (restante > 0) {
             throw new FaixaNaoCobreConsumoException("Faixas não cobrem o consumo %d informado", categoria.name(),
                     consumo);
+
         }
 
         return new CalculoResponseDTO(categoria, consumo, valorTotal, detalhamento);
+
     }
 
     private void validaCalculoRequest(CalculoRequestDTO calculoRequestDTO) {
         if (calculoRequestDTO == null || calculoRequestDTO.consumo() == null || calculoRequestDTO.categoria() == null) {
             throw new CalculoRequestException("Erro no corpo JSON");
+
         }
     }
 
