@@ -80,4 +80,16 @@ public class FaixaTarifaria {
     public void setOrdem(Integer ordem) {
         this.ordem = ordem;
     }
+
+    @Override
+    public String toString() {
+        return "FaixaTarifaria{" +
+                "id=" + id +
+                ", categoria=" + categoria +
+                ", inicio=" + inicio +
+                ", fim=" + fim +
+                ", valorUnitario=" + valorUnitario +
+                ", ordem=" + ordem +
+                '}';
+    }
 }

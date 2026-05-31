@@ -31,7 +31,7 @@ public class ConfigOpenAPI {
     @Bean("GlobalController")
     public GroupedOpenApi calculoGroupedOpenApi() {
         return GroupedOpenApi.builder()
-                .group("CalculoController")
+                .group("GlobalController")
                 .pathsToMatch("/api/**")
                 .build();
     }

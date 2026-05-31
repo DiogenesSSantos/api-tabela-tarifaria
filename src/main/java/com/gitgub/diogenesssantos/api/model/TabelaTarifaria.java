@@ -3,6 +3,7 @@ package com.gitgub.diogenesssantos.api.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "tabela_tarifaria")
@@ -15,6 +16,8 @@ public class TabelaTarifaria {
     private LocalDate dataVigencia;
     private boolean ativo = true;
 
+    @OneToMany(mappedBy = "tabela", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<FaixaTarifaria> faixaTarifariaList;
 
     public Long getId() {
         return id;
@@ -46,5 +49,17 @@ public class TabelaTarifaria {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+
+    @Override
+    public String toString() {
+        return "TabelaTarifaria{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", dataVigencia=" + dataVigencia +
+                ", ativo=" + ativo +
+                ", faixaTarifariaList=" + faixaTarifariaList +
+                '}';
     }
 }
