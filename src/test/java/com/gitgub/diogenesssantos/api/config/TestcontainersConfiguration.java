@@ -29,7 +29,7 @@ public class TestcontainersConfiguration {
             props.put("spring.datasource.url", POSTGRES.getJdbcUrl());
             props.put("spring.datasource.username", POSTGRES.getUsername());
             props.put("spring.datasource.password", POSTGRES.getPassword());
-            props.put("spring.flyway.locations", "classpath:db/migration,classpath:db/test_migration");
+            props.put("spring.flyway.locations", "classpath:db/migration/test");
 
             configurationApplication.getEnvironment().getPropertySources()
                     .addFirst(new MapPropertySource("testcontainers", props));
