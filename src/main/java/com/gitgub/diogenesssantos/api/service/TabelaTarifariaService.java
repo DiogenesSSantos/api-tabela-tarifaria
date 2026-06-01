@@ -85,7 +85,7 @@ public class TabelaTarifariaService {
     }
 
     public TabelaTarifaria buscarPorId(Long id) {
-        return tabelaRepo.findById(id)
+        return tabelaRepo.buscarPorId(id)
                 .orElseThrow(() ->
                         new TabelaTarifariaNaoLocalizadaException(
                                 String.format("A tabela tarifaria de id %d não existe no banco de dados.", id)));

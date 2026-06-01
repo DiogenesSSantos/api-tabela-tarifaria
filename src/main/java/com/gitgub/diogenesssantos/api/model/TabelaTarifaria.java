@@ -51,6 +51,13 @@ public class TabelaTarifaria {
         this.ativo = ativo;
     }
 
+    public void setFaixaTarifariaList(List<FaixaTarifaria> faixaTarifariaList) {
+        this.faixaTarifariaList = faixaTarifariaList;
+    }
+
+    public List<FaixaTarifaria> getFaixaTarifariaList() {
+        return faixaTarifariaList;
+    }
 
     @Override
     public String toString() {

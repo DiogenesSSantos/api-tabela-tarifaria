@@ -1,7 +1,9 @@
 package com.gitgub.diogenesssantos.api.controller;
 
+import com.gitgub.diogenesssantos.api.assemble.AssembleTabelaTarifaria;
 import com.gitgub.diogenesssantos.api.docs.TabelaTarifariaDocumentacaoOpenAPI;
 import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaRequestDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaResponseDTO;
 import com.gitgub.diogenesssantos.api.model.TabelaTarifaria;
 import com.gitgub.diogenesssantos.api.service.TabelaTarifariaService;
 import org.springframework.http.HttpStatus;
@@ -26,9 +28,10 @@ public class TabelaTarifariaController implements TabelaTarifariaDocumentacaoOpe
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TabelaTarifaria> buscarPorId(@PathVariable (name = "id", required =  true) Long id) {
+    public ResponseEntity<TabelaTarifariaResponseDTO> buscarPorId(@PathVariable (name = "id", required =  true) Long id) {
         var tabelaTarifa = service.buscarPorId(id);
-        return ResponseEntity.ok().body(tabelaTarifa);
+        var tabelaTarifaDTO = AssembleTabelaTarifaria.modelToDTO(tabelaTarifa);
+        return ResponseEntity.ok().body(tabelaTarifaDTO);
     }
 
 

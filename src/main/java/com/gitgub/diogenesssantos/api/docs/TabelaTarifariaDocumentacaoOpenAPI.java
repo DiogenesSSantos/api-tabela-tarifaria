@@ -2,6 +2,7 @@ package com.gitgub.diogenesssantos.api.docs;
 
 
 import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaRequestDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaResponseDTO;
 import com.gitgub.diogenesssantos.api.model.TabelaTarifaria;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -160,7 +161,7 @@ public interface TabelaTarifariaDocumentacaoOpenAPI {
                     ),
                     @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
             })
-    ResponseEntity<TabelaTarifaria> buscarPorId(Long id);
+    ResponseEntity<TabelaTarifariaResponseDTO> buscarPorId(Long id);
 
 
     @Operation(summary = "Deletar uma tabela tarifaria pelo ID.",
