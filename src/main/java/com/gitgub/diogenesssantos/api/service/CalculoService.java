@@ -42,6 +42,7 @@ public class CalculoService {
                         new TabelaTarifariaNaoAtivaException("Nenhuma tabela tarifaria ativa não banco de dados."));
 
         List<FaixaTarifaria> faixas = faixaRepo.findByTabelaAndCategoriaOrderByOrdemAsc(tabela, categoria);
+        FaixaTarifaria ultimaFaixa = faixas.getLast();
 
         int restante = consumo;
         BigDecimal valorTotal = BigDecimal.ZERO;
@@ -53,7 +54,7 @@ public class CalculoService {
             int faixaInicio = faixa.getInicio();
             int faixaFim = faixa.getFim();
             int faixaCapacidade = faixaFim - faixaInicio;
-            int m3Cobrado = Math.min(restante, faixaCapacidade);
+            int m3Cobrado = faixa.equals(ultimaFaixa) ? restante : Math.min(restante, faixaCapacidade);
 
             if (m3Cobrado > 0) {
                 BigDecimal subtotal = faixa.getValorUnitario().multiply(BigDecimal.valueOf(m3Cobrado));
@@ -68,12 +69,6 @@ public class CalculoService {
                 restante -= m3Cobrado;
 
             }
-        }
-
-        if (restante > 0) {
-            throw new FaixaNaoCobreConsumoException("Faixas não cobrem o consumo %d informado", categoria.name(),
-                    consumo);
-
         }
 
         return new CalculoResponseDTO(categoria, consumo, valorTotal, detalhamento);
