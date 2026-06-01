@@ -78,9 +78,10 @@ public class TabelaTarifariaService {
     }
 
 
-    public void deletarPorId(Long id) {
-        tabelaRepo.findById(id)
-                .ifPresent(tabelaRepo::delete);
+    public TabelaTarifaria deletarPorId(Long id) {
+        TabelaTarifaria tabelaTarifariaBD = buscarPorId(id);
+        tabelaTarifariaBD.setAtivo(false);
+        return tabelaRepo.saveAndFlush(tabelaTarifariaBD);
 
     }
 

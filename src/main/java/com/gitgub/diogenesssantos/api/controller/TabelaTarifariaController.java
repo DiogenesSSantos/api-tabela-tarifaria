@@ -49,9 +49,10 @@ public class TabelaTarifariaController implements TabelaTarifariaDocumentacaoOpe
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletaTabelaPorId(@PathVariable (name = "id") Long id) {
-        service.deletarPorId(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<TabelaTarifariaResponseDTO> deletaTabelaPorId(@PathVariable (name = "id") Long id) {
+        TabelaTarifaria tabelaTarifariaBD = service.deletarPorId(id);
+        var tabelaTarifaDTO = AssembleTabelaTarifaria.modelToDTO(tabelaTarifariaBD);
+        return ResponseEntity.ok().body(tabelaTarifaDTO);
     }
 
 }

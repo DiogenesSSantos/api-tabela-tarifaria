@@ -173,6 +173,6 @@ public interface TabelaTarifariaDocumentacaoOpenAPI {
                     @ApiResponse(description = "Success", responseCode = "204", content = @Content),
                     @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
             })
-    public ResponseEntity<Void> deletaTabelaPorId(Long id);
+    public ResponseEntity<TabelaTarifariaResponseDTO> deletaTabelaPorId(Long id);
 
 }
