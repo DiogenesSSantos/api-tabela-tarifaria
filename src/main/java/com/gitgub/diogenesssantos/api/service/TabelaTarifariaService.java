@@ -27,9 +27,25 @@ public class TabelaTarifariaService {
 
     }
 
+    public TabelaTarifaria buscarPorId(Long id) {
+        return tabelaRepo.buscarPorId(id)
+                .orElseThrow(() ->
+                        new TabelaTarifariaNaoLocalizadaException(
+                                String.format("A tabela tarifaria de id %d não existe no banco de dados.", id)));
+
+    }
+
+    public List<TabelaTarifaria> buscarTodasTabelas() {
+        return tabelaRepo.findAll().stream()
+                .sorted(Comparator.comparing(TabelaTarifaria::getDataVigencia)
+                        .reversed())
+                .toList();
+
+    }
+
     @Transactional
     public TabelaTarifaria salvarTabela(TabelaTarifariaRequestDTO tabelaTarifaria) {
-        validaTabelaTarifariaRequest(tabelaTarifaria);
+        validaFaixasTabelaTarifaria(tabelaTarifaria);
 
         TabelaTarifaria tabela = new TabelaTarifaria();
         tabela.setNome(tabelaTarifaria.nome());
@@ -56,15 +72,7 @@ public class TabelaTarifariaService {
 
     }
 
-
-    public List<TabelaTarifaria> buscarTodasTabelas() {
-        return tabelaRepo.findAll().stream()
-                .sorted(Comparator.comparing(TabelaTarifaria::getDataVigencia)
-                        .reversed())
-                .toList();
-
-    }
-
+    @Transactional
     public List<TabelaTarifaria> salvarTabelaEmLote(List<TabelaTarifariaRequestDTO> tabelaTarifariaRequests) {
         List<TabelaTarifaria> tabelaTarifariaList = new ArrayList<>();
 
@@ -85,26 +93,10 @@ public class TabelaTarifariaService {
 
     }
 
-    public TabelaTarifaria buscarPorId(Long id) {
-        return tabelaRepo.buscarPorId(id)
-                .orElseThrow(() ->
-                        new TabelaTarifariaNaoLocalizadaException(
-                                String.format("A tabela tarifaria de id %d não existe no banco de dados.", id)));
-
-    }
-
-    private void validaTabelaTarifariaRequest(TabelaTarifariaRequestDTO tabelaTarifaria) {
-        validaCategoriaTabelaTarafia(tabelaTarifaria);
-        validaFaixasTabelaTarifaria(tabelaTarifaria);
-
-    }
-
 
     private void validaFaixasTabelaTarifaria(TabelaTarifariaRequestDTO tabelaTarifaria) {
-        Iterator<CategoriaRequestDTO> iterator = tabelaTarifaria.categorias().iterator();
 
-        while (iterator.hasNext()) {
-            var categoria = iterator.next();
+        for (CategoriaRequestDTO categoria : tabelaTarifaria.categorias()) {
             var categoriaNome = categoria.nome();
             var faixas = categoria.faixas();
 
@@ -147,44 +139,4 @@ public class TabelaTarifariaService {
     }
 
 
-    private void validaCategoriaTabelaTarafia(TabelaTarifariaRequestDTO tabelaTarifaria) {
-        validaCamposTabelaTarifaria(tabelaTarifaria);
-
-        if (tabelaTarifaria.categorias().size() < 4) {
-            throw new TabelaTarifariaException("Erro tarefa", tabelaTarifaria.nome());
-        }
-
-        Iterator<CategoriaRequestDTO> iterator = tabelaTarifaria.categorias().iterator();
-        while (iterator.hasNext()) {
-            var categoria = iterator.next();
-            var categoriaNome = categoria.nome();
-
-            if (categoria == null || categoriaNome == null || categoriaNome.isBlank()) {
-                throw new CategoriaNomeException("A categoria não pode null ou vázio.");
-            }
-
-            boolean validaNome = switch (categoria.nome()) {
-                case "COMERCIAL", "INDUSTRIAL", "PARTICULAR", "PUBLICO" -> true;
-                default -> false;
-            };
-
-            if (!validaNome) throw new CategoriaNomeInvalidoException("A nome categoria inválido.", categoriaNome);
-
-        }
-    }
-
-    private void validaCamposTabelaTarifaria(TabelaTarifariaRequestDTO tabelaTarifaria) {
-        if (tabelaTarifaria.categorias() == null) {
-            throw new TabelaTarifariaNullException("Erro na tabela tarifaria, categoria não pode ser null.");
-        }
-
-        if (tabelaTarifaria.nome() == null || tabelaTarifaria.nome().isBlank()) {
-            throw new TabelaTarifariaNullException("Erro na tabela tarifaria, o nome não pode ser null ou ser vázia.");
-        }
-
-        if (tabelaTarifaria.dataVigencia() == null) {
-            throw new TabelaTarifariaDataVigenciaException("Erro na tabela tarifaria, a data não pode ser null.");
-
-        }
-    }
 }

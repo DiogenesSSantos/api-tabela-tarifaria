@@ -1,6 +1,9 @@
 package com.gitgub.diogenesssantos.api.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +18,6 @@ public class TabelaTarifaria {
     private String nome;
     private LocalDate dataVigencia;
     private boolean ativo = true;
-
     @OneToMany(mappedBy = "tabela", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<FaixaTarifaria> faixaTarifariaList;
 

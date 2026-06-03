@@ -2,16 +2,42 @@ package com.gitgub.diogenesssantos.api.exceptionhandler;
 
 
 import com.gitgub.diogenesssantos.api.exception.*;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
+
+
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Error> handleConstraintViolation(
+            MethodArgumentNotValidException ex) {
+
+        List<Error.Campos> erros = ex.getFieldErrors().stream()
+                .map(fieldError -> new Error.Campos(fieldError.getField().replaceAll(".*\\.", "")
+                        , fieldError.getDefaultMessage()))
+                .toList();
+
+        var problema = new Error(
+                HttpStatus.BAD_REQUEST.value(),
+                String.format("Erro no campos."),
+                String.format("A tabela tarifaria deve conter todos campos válidos, observe os campos abaixo inválidos."),
+                MethodArgumentNotValidException.class.getSimpleName(),
+                LocalDateTime.now(),
+                erros);
+
+        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+    }
+
 
 
     @ExceptionHandler(TabelaTarifariaException.class)

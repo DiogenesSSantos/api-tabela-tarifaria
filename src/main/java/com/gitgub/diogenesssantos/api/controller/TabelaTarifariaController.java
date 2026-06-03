@@ -6,6 +6,7 @@ import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaReques
 import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaResponseDTO;
 import com.gitgub.diogenesssantos.api.model.TabelaTarifaria;
 import com.gitgub.diogenesssantos.api.service.TabelaTarifariaService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class TabelaTarifariaController implements TabelaTarifariaDocumentacaoOpe
 
 
     @PostMapping
-    public ResponseEntity<TabelaTarifaria> criarTabela(@RequestBody TabelaTarifariaRequestDTO tabelaTarifariaRequest) {
+    public ResponseEntity<TabelaTarifaria> criarTabela(@RequestBody @Valid TabelaTarifariaRequestDTO tabelaTarifariaRequest) {
         TabelaTarifaria tabela = service.salvarTabela(tabelaTarifariaRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(tabela);
     }
