@@ -73,14 +73,45 @@ public class TabelaTarifariaService {
 
     @Transactional
     public List<TabelaTarifaria> salvarTabelaEmLote(List<TabelaTarifariaRequestDTO> tabelaTarifariaRequests) {
-        List<TabelaTarifaria> tabelaTarifariaList = new ArrayList<>();
+        tabelaTarifariaRequests.stream().forEach(this::validaFaixasTabelaTarifaria);
 
-        for (var tabelaTarifaria : tabelaTarifariaRequests) {
-            var tabelaTarSalvaBD = salvarTabela(tabelaTarifaria);
-            tabelaTarifariaList.add(tabelaTarSalvaBD);
+        List<TabelaTarifaria> tabelas = tabelaTarifariaRequests.stream()
+                .map(req -> {
+                    TabelaTarifaria tabela = new TabelaTarifaria();
+                    tabela.setNome(req.nome());
+                    tabela.setDataVigencia(req.dataVigencia());
+                    tabela.setAtivo(true);
+                    return tabela;
+                })
+                .toList();
+
+        List<TabelaTarifaria> tabelasSalvas = tabelaRepo.saveAllAndFlush(tabelas);
+        List<FaixaTarifaria> faixaTarifariaList = new ArrayList<>();
+
+        for (int i = 0; i < tabelasSalvas.size(); i++) {
+            TabelaTarifariaRequestDTO tabelaTarifariaRequestDTO = tabelaTarifariaRequests.get(i);
+            TabelaTarifaria tabelaTarifaria = tabelasSalvas.get(i);
+
+
+            for (CategoriaRequestDTO catReq : tabelaTarifariaRequestDTO.categorias()) {
+                Categoria categoria = Categoria.valueOf(catReq.nome().toUpperCase());
+
+                for (FaixaRequestDTO faixaReq : catReq.faixas()) {
+                    FaixaTarifaria faixa = new FaixaTarifaria();
+                    faixa.setTabela(tabelaTarifaria);
+                    faixa.setCategoria(categoria);
+                    faixa.setInicio(faixaReq.inicio());
+                    faixa.setFim(faixaReq.fim());
+                    faixa.setValorUnitario(BigDecimal.valueOf(faixaReq.valorUnitario()));
+                    faixa.setOrdem(faixaReq.ordem());
+                    faixaTarifariaList.add(faixa);
+                }
+            }
         }
 
-        return tabelaTarifariaList;
+        faixaRepo.saveAll(faixaTarifariaList);
+
+        return tabelasSalvas;
 
     }
 
