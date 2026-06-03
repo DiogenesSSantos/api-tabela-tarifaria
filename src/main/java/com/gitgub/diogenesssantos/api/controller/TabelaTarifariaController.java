@@ -25,7 +25,7 @@ public class TabelaTarifariaController implements TabelaTarifariaDocumentacaoOpe
 
     @GetMapping
     public ResponseEntity<List<TabelaTarifaria>> listarTabelas() {
-        return ResponseEntity.ok(service.buscarTodasTabelas());
+        return ResponseEntity.ok(service.buscarTodasTabelasAtivas());
     }
 
     @GetMapping("/{id}")

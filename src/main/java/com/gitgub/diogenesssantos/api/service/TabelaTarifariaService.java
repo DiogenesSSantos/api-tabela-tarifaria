@@ -27,19 +27,16 @@ public class TabelaTarifariaService {
 
     }
 
+    public List<TabelaTarifaria> buscarTodasTabelasAtivas() {
+        return tabelaRepo.findByAtivoTrueOrderByDataVigenciaDesc();
+
+    }
+
     public TabelaTarifaria buscarPorId(Long id) {
         return tabelaRepo.buscarPorId(id)
                 .orElseThrow(() ->
                         new TabelaTarifariaNaoLocalizadaException(
                                 String.format("A tabela tarifaria de id %d não existe no banco de dados.", id)));
-
-    }
-
-    public List<TabelaTarifaria> buscarTodasTabelas() {
-        return tabelaRepo.findAll().stream()
-                .sorted(Comparator.comparing(TabelaTarifaria::getDataVigencia)
-                        .reversed())
-                .toList();
 
     }
 
@@ -53,6 +50,7 @@ public class TabelaTarifariaService {
         tabela.setAtivo(true);
         tabelaRepo.save(tabela);
 
+        List<FaixaTarifaria> faixaTarifariaList = new ArrayList<>();
         for (CategoriaRequestDTO catReq : tabelaTarifaria.categorias()) {
             Categoria categoria = Categoria.valueOf(catReq.nome().toUpperCase());
 
@@ -64,9 +62,10 @@ public class TabelaTarifariaService {
                 faixa.setFim(faixaReq.fim());
                 faixa.setValorUnitario(BigDecimal.valueOf(faixaReq.valorUnitario()));
                 faixa.setOrdem(faixaReq.ordem());
-                faixaRepo.save(faixa);
+                faixaTarifariaList.add(faixa);
             }
         }
+        faixaRepo.saveAll(faixaTarifariaList);
 
         return tabela;
 
