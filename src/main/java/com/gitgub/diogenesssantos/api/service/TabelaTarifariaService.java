@@ -20,6 +20,7 @@ public class TabelaTarifariaService {
 
     private final TabelaTarifariaRepository tabelaRepo;
     private final FaixaTarifariaService faixaTarifariaService;
+
     public TabelaTarifariaService(TabelaTarifariaRepository tabelaRepo, FaixaTarifariaService faixaTarifariaService) {
         this.tabelaRepo = tabelaRepo;
         this.faixaTarifariaService = faixaTarifariaService;
@@ -42,15 +43,11 @@ public class TabelaTarifariaService {
     @Transactional
     public TabelaTarifaria salvarTabela(TabelaTarifariaRequestDTO tabelaTarifariaRDTO) {
         faixaTarifariaService.validaFaixasTabelaTarifaria(tabelaTarifariaRDTO);
-
-        TabelaTarifaria tabela = new TabelaTarifaria();
-        tabela.setNome(tabelaTarifariaRDTO.nome());
-        tabela.setDataVigencia(tabelaTarifariaRDTO.dataVigencia());
-        tabela.setAtivo(true);
+        TabelaTarifaria tabela = dtoToModel(tabelaTarifariaRDTO);
 
         TabelaTarifaria tabelaSalva = tabelaRepo.saveAndFlush(tabela);
-        List<FaixaTarifaria> faixaTarifariaList = faixaTarifariaService.
-                criarFaixaTarifariaList(tabelaTarifariaRDTO, tabelaSalva);
+        List<FaixaTarifaria> faixaTarifariaList = faixaTarifariaService.criarFaixaTarifariaList(tabelaTarifariaRDTO,
+                tabelaSalva);
 
         faixaTarifariaService.salvarTodasFaixas(faixaTarifariaList);
 
@@ -59,35 +56,28 @@ public class TabelaTarifariaService {
     }
 
 
+
     @Transactional
     public List<TabelaTarifaria> salvarTabelaEmLote(List<TabelaTarifariaRequestDTO> tabelaTarifariaRequests) {
         tabelaTarifariaRequests.forEach(faixaTarifariaService::validaFaixasTabelaTarifaria);
 
         List<TabelaTarifaria> tabelas = tabelaTarifariaRequests.stream()
-                .map(req -> {
-                    TabelaTarifaria tabela = new TabelaTarifaria();
-                    tabela.setNome(req.nome());
-                    tabela.setDataVigencia(req.dataVigencia());
-                    tabela.setAtivo(true);
-                    return tabela;
-                })
+                .map(this::dtoToModel)
                 .toList();
 
         List<TabelaTarifaria> tabelasSalvas = tabelaRepo.saveAllAndFlush(tabelas);
-        List<FaixaTarifaria> faixaTarifariaList = new ArrayList<>();
+        List<FaixaTarifaria> todasFaixas = new ArrayList<>();
 
         for (int i = 0; i < tabelasSalvas.size(); i++) {
-            TabelaTarifariaRequestDTO tabelaTarifariaRDTO = tabelaTarifariaRequests.get(i);
-            TabelaTarifaria tabelaSalva = tabelasSalvas.get(i);
-            faixaTarifariaList = faixaTarifariaService.
-                    criarFaixaTarifariaList(tabelaTarifariaRDTO, tabelaSalva);
+            List<FaixaTarifaria> faixas = faixaTarifariaService.criarFaixaTarifariaList(tabelaTarifariaRequests.get(i),
+                    tabelasSalvas.get(i));
 
+            todasFaixas.addAll(faixas);
         }
 
-        faixaTarifariaService.salvarTodasFaixas(faixaTarifariaList);
+        faixaTarifariaService.salvarTodasFaixas(todasFaixas);
 
         return tabelasSalvas;
-
     }
 
 
@@ -99,7 +89,13 @@ public class TabelaTarifariaService {
 
     }
 
-
+    private TabelaTarifaria dtoToModel(TabelaTarifariaRequestDTO tabelaTarifariaRDTO) {
+        TabelaTarifaria tabela = new TabelaTarifaria();
+        tabela.setNome(tabelaTarifariaRDTO.nome());
+        tabela.setDataVigencia(tabelaTarifariaRDTO.dataVigencia());
+        tabela.setAtivo(true);
+        return tabela;
+    }
 
 
 }

@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FaixaTarifariaService {
@@ -32,8 +34,8 @@ public class FaixaTarifariaService {
     }
 
 
-
-    List<FaixaTarifaria> criarFaixaTarifariaList(TabelaTarifariaRequestDTO tabelaTarifaria, TabelaTarifaria tabela) {
+    List<FaixaTarifaria> criarFaixaTarifariaList(TabelaTarifariaRequestDTO tabelaTarifaria,
+                                                 TabelaTarifaria tabela) {
         List<FaixaTarifaria> faixaTarifariaList = new ArrayList<>();
         for (CategoriaRequestDTO catReq : tabelaTarifaria.categorias()) {
             Categoria categoria = Categoria.valueOf(catReq.nome().toUpperCase());
@@ -51,7 +53,6 @@ public class FaixaTarifariaService {
         }
         return faixaTarifariaList;
     }
-
 
 
     public void validaFaixasTabelaTarifaria(TabelaTarifariaRequestDTO tabelaTarifaria) {
