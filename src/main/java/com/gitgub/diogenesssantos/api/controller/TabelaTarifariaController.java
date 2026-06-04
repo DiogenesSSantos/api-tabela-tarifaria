@@ -24,8 +24,10 @@ public class TabelaTarifariaController implements TabelaTarifariaDocumentacaoOpe
     }
 
     @GetMapping
-    public ResponseEntity<List<TabelaTarifaria>> listarTabelas() {
-        return ResponseEntity.ok(service.buscarTodasTabelasAtivas());
+    public ResponseEntity<List<TabelaTarifariaResponseDTO>> buscarTodasTabelas() {
+        List<TabelaTarifaria> tabelaTarifariaListBD = service.buscarTodasTabelasAtivas();
+        var listtabelaTarifaDTO = AssembleTabelaTarifaria.listModelToLisDTO(tabelaTarifariaListBD);
+        return ResponseEntity.ok().body(listtabelaTarifaDTO);
     }
 
     @GetMapping("/{id}")

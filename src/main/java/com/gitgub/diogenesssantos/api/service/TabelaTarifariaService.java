@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TabelaTarifariaService {
@@ -28,7 +29,8 @@ public class TabelaTarifariaService {
     }
 
     public List<TabelaTarifaria> buscarTodasTabelasAtivas() {
-        return tabelaRepo.findByAtivoTrueOrderByDataVigenciaDesc();
+        List<TabelaTarifaria> byAtivoTrueOrderByDataVigenciaDesc = tabelaRepo.findByAtivoTrueOrderByDataVigenciaDesc();
+        return byAtivoTrueOrderByDataVigenciaDesc.stream().toList();
 
     }
 

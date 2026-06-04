@@ -35,7 +35,7 @@ public interface TabelaTarifariaDocumentacaoOpenAPI {
                     ),
                     @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
             })
-    public ResponseEntity<List<TabelaTarifaria>> listarTabelas();
+    public ResponseEntity<List<TabelaTarifariaResponseDTO>> buscarTodasTabelas();
 
 
 

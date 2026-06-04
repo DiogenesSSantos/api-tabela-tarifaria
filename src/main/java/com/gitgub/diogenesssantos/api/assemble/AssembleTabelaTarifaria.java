@@ -30,4 +30,9 @@ public class AssembleTabelaTarifaria {
 
     }
 
+    public static List<TabelaTarifariaResponseDTO> listModelToLisDTO(List<TabelaTarifaria> tabelaTarifariaListBD) {
+        return tabelaTarifariaListBD.stream()
+                .map(AssembleTabelaTarifaria::modelToDTO)
+                .toList();
+    }
 }
