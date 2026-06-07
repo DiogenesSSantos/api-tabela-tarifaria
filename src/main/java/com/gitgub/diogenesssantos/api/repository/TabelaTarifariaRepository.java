@@ -11,8 +11,8 @@ import java.util.Optional;
 
 @Repository
 public interface TabelaTarifariaRepository extends JpaRepository<TabelaTarifaria, Long> {
-    List<TabelaTarifaria> findByAtivoTrueOrderByDataVigenciaDesc();
 
+    boolean existsByAtivoTrue();
 
     @Query("""
                 SELECT t FROM TabelaTarifaria t
@@ -20,6 +20,13 @@ public interface TabelaTarifariaRepository extends JpaRepository<TabelaTarifaria
             """)
     List<TabelaTarifaria> buscarTodas();
 
+    @Query("""
+            SELECT t FROM TabelaTarifaria t
+            JOIN FETCH t.faixaTarifariaList f
+            WHERE t.ativo = TRUE
+            ORDER BY t.dataVigencia DESC, f.ordem ASC
+            """)
+    List<TabelaTarifaria> buscarTodasAtivas();
 
     @Query("""
                 SELECT t FROM TabelaTarifaria t

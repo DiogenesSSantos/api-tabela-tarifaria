@@ -32,14 +32,11 @@ public class CalculoService {
 
     @Transactional
     public CalculoResponseDTO calcular(CalculoRequestDTO calculoRequestDTO) {
+        validaExisteTabelaOuThrow();
         validaCalculoRequest(calculoRequestDTO);
         var categoria = calculoRequestDTO.categoria();
         var consumo = calculoRequestDTO.consumo();
 
-        tabelaRepo.findByAtivoTrueOrderByDataVigenciaDesc()
-                .stream().findFirst()
-                .orElseThrow(() ->
-                        new TabelaTarifariaNaoAtivaException("Nenhuma tabela tarifaria ativa não banco de dados."));
 
         List<FaixaTarifaria> faixas = faixaRepo.findFaixasAtivasByCategoria(categoria);
         FaixaTarifaria ultimaFaixa = faixas.getLast();
@@ -80,6 +77,11 @@ public class CalculoService {
             throw new CalculoRequestException("Erro no corpo JSON");
 
         }
+    }
+
+    private void validaExisteTabelaOuThrow () {
+        if (tabelaRepo.existsByAtivoTrue()) return;
+        throw new TabelaTarifariaNaoAtivaException("Nenhuma tabela tarifaria ativa não banco de dados.");
     }
 
 }

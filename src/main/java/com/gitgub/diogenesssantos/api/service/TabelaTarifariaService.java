@@ -29,7 +29,7 @@ public class TabelaTarifariaService {
     }
 
     public List<TabelaTarifaria> buscarTodasTabelasAtivas() {
-        List<TabelaTarifaria> byAtivoTrueOrderByDataVigenciaDesc = tabelaRepo.findByAtivoTrueOrderByDataVigenciaDesc();
+        List<TabelaTarifaria> byAtivoTrueOrderByDataVigenciaDesc = tabelaRepo.buscarTodasAtivas();
         return byAtivoTrueOrderByDataVigenciaDesc.stream().toList();
 
     }
