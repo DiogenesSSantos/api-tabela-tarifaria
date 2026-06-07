@@ -36,14 +36,37 @@ public interface CalculoRepresentacaoOpenAPI {
             """;
 
 
-    String BAD_REQUEST = """
+    String BAD_REQUEST_CONSUMO = """
             
             {
               "statusCode": 400,
-              "mensagem": "Campo formato inválido.",
-              "mensagemUsuario": "Algum campo do JSON  está com o formato inválido, revise a documentação.",
-              "classException": "HttpMessageNotReadableException",
-              "timeStamp": "2026-05-08T14:57:29.4830233"
+              "mensagem": "Erro JSON campos inválidos.",
+              "mensagemUsuario": "O corpo da requisição incorreto, observe os campos abaixo inválidos e corrigia seguindo a instrução.",
+              "classException": "MethodArgumentNotValidException",
+              "timeStamp": "2026-06-07T16:36:25.7163881",
+              "errorsCampos": [
+                {
+                  "campo": "consumo",
+                  "mensagem": "Consumo inválido. Não pode null."
+                }
+              ]
+            }
+            """;
+
+    String BAD_REQUEST_CATEGORIA = """
+            
+            {
+              "statusCode": 400,
+              "mensagem": "Erro JSON campos inválidos.",
+              "mensagemUsuario": "O corpo da requisição incorreto, observe os campos abaixo inválidos e corrigia seguindo a instrução.",
+              "classException": "MethodArgumentNotValidException",
+              "timeStamp": "2026-06-07T16:36:25.7163881",
+              "errorsCampos": [
+                {
+                  "campo": "categoria",
+                  "mensagem": "Categoria inválida. Valores aceitos: COMERCIAL, INDUSTRIAL, PARTICULAR, PUBLICO"
+                }
+              ]
             }
             """;
 

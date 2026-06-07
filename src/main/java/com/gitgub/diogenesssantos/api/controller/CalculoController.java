@@ -4,6 +4,7 @@ import com.gitgub.diogenesssantos.api.docs.CalculoDocumentacaoOpenAPI;
 import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoRequestDTO;
 import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoResponseDTO;
 import com.gitgub.diogenesssantos.api.service.CalculoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +20,7 @@ public class CalculoController implements CalculoDocumentacaoOpenAPI {
         this.calculoService = calculoService; }
 
     @PostMapping("/calculos")
-    public ResponseEntity<CalculoResponseDTO> calcular(@RequestBody CalculoRequestDTO req) {
+    public ResponseEntity<CalculoResponseDTO> calcular(@RequestBody @Valid CalculoRequestDTO req) {
 
         var resp = calculoService.calcular(req);
         return ResponseEntity.ok(resp);

@@ -1,20 +1,15 @@
 package com.gitgub.diogenesssantos.api.service;
 
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.CategoriaRequestDTO;
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.FaixaRequestDTO;
 import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaRequestDTO;
-import com.gitgub.diogenesssantos.api.exception.*;
-import com.gitgub.diogenesssantos.api.model.Categoria;
+import com.gitgub.diogenesssantos.api.exception.TabelaTarifariaNaoLocalizadaException;
 import com.gitgub.diogenesssantos.api.model.FaixaTarifaria;
 import com.gitgub.diogenesssantos.api.model.TabelaTarifaria;
-import com.gitgub.diogenesssantos.api.repository.FaixaTarifariaRepository;
 import com.gitgub.diogenesssantos.api.repository.TabelaTarifariaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TabelaTarifariaService {

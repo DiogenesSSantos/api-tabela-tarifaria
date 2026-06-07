@@ -2,20 +2,23 @@ package com.gitgub.diogenesssantos.api.exceptionhandler;
 
 
 import com.gitgub.diogenesssantos.api.exception.*;
-import jakarta.validation.ConstraintViolationException;
+import com.gitgub.diogenesssantos.api.model.Categoria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import tools.jackson.core.exc.StreamReadException;
+import tools.jackson.databind.exc.InvalidFormatException;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
-
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -29,15 +32,14 @@ public class ApiExceptionHandler {
 
         var problema = new Error(
                 HttpStatus.BAD_REQUEST.value(),
-                String.format("Erro no campos."),
-                String.format("A tabela tarifaria deve conter todos campos válidos, observe os campos abaixo inválidos."),
+                String.format("Erro JSON campos inválidos."),
+                String.format("O corpo da requisição incorreto, observe os campos abaixo inválidos e corrigia seguindo a instrução."),
                 MethodArgumentNotValidException.class.getSimpleName(),
                 LocalDateTime.now(),
                 erros);
 
-        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
     }
-
 
 
     @ExceptionHandler(TabelaTarifariaException.class)
@@ -83,7 +85,6 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
 
     }
-
 
 
     @ExceptionHandler(TabelaTarifariaNomeException.class)
@@ -206,20 +207,6 @@ public class ApiExceptionHandler {
     }
 
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Error> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
-        var problemaPadrao = new Error(
-                HttpStatus.BAD_REQUEST.value(),
-                "Campo formato inválido.",
-                "Algum campo do JSON  está com o formato inválido, revise a documentação.",
-                HttpMessageNotReadableException.class.getSimpleName(),
-                LocalDateTime.now(),
-                null);
-
-        return ResponseEntity.badRequest().body(problemaPadrao);
-    }
-
-
     @ExceptionHandler(TabelaTarifariaNaoLocalizadaException.class)
     public ResponseEntity<Error> tabelaTarifariaNaoLocalizadaException(TabelaTarifariaNaoLocalizadaException ex) {
         var problemaPadrao = new Error(
@@ -233,5 +220,48 @@ public class ApiExceptionHandler {
         return ResponseEntity.badRequest().body(problemaPadrao);
     }
 
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Error> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        String mensagemUsuario = "O JSON enviado está malformado. Verifique se todos os campos possuem valores válidos.";
+
+        Throwable causa = ex.getCause();
+
+        if (causa instanceof InvalidFormatException invalidFormat
+                && invalidFormat.getTargetType() != null
+                && invalidFormat.getTargetType().isEnum()) {
+
+            String valorInformado = invalidFormat.getValue().toString();
+            String valoresValidos = Arrays.stream(invalidFormat.getTargetType().getEnumConstants())
+                    .map(Object::toString)
+                    .collect(Collectors.joining(", "));
+
+            mensagemUsuario = "O valor '%s' é inválido para o campo '%s'. Valores aceitos: [%s]"
+                    .formatted(
+                            valorInformado,
+                            invalidFormat.getPath().getLast().getPropertyName(),
+                            valoresValidos
+                    );
+
+        } else if (ex.getMessage() != null && ex.getMessage().contains("Cannot coerce empty String")) {
+            String valoresValidos = Arrays.stream(Categoria.values())
+                    .map(Enum::name)
+                    .collect(Collectors.joining(", "));
+            mensagemUsuario = "O campo 'categoria' não pode ser vazio. Valores aceitos: [%s]"
+                    .formatted(valoresValidos);
+
+        }
+
+
+        var problemaPadrao = new Error(
+                HttpStatus.BAD_REQUEST.value(),
+                "Campo formato inválido.",
+                mensagemUsuario,
+                HttpMessageNotReadableException.class.getSimpleName(),
+                LocalDateTime.now(),
+                null);
+
+        return ResponseEntity.badRequest().body(problemaPadrao);
+    }
 
 }
