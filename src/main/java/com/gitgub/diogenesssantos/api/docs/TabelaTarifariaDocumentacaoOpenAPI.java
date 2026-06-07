@@ -1,9 +1,8 @@
 package com.gitgub.diogenesssantos.api.docs;
 
 
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaRequestDTO;
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaResponseDTO;
-import com.gitgub.diogenesssantos.api.model.TabelaTarifaria;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.request.TabelaTarifariaRequestDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.response.TabelaTarifariaResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

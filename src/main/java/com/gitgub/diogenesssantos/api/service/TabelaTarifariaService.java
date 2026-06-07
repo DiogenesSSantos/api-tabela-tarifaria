@@ -1,6 +1,6 @@
 package com.gitgub.diogenesssantos.api.service;
 
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaRequestDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.request.TabelaTarifariaRequestDTO;
 import com.gitgub.diogenesssantos.api.exception.TabelaTarifariaNaoLocalizadaException;
 import com.gitgub.diogenesssantos.api.model.FaixaTarifaria;
 import com.gitgub.diogenesssantos.api.model.TabelaTarifaria;

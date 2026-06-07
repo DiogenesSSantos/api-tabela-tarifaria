@@ -6,5 +6,5 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record CalculoResponseDTO(Categoria categoria, Integer consumoTotal,
-                                 BigDecimal valorTotal, List<DetalheFaixaDTO> detalhamento) {
+                                 BigDecimal valorTotal, List<DetalheFaixaResponseDTO> detalhamento) {
 }

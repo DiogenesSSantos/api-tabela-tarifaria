@@ -2,8 +2,8 @@ package com.gitgub.diogenesssantos.api.service;
 
 import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoRequestDTO;
 import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoResponseDTO;
-import com.gitgub.diogenesssantos.api.dtos.calculos.DetalheFaixaDTO;
-import com.gitgub.diogenesssantos.api.dtos.calculos.FaixaDTO;
+import com.gitgub.diogenesssantos.api.dtos.calculos.DetalheFaixaResponseDTO;
+import com.gitgub.diogenesssantos.api.dtos.calculos.FaixaResponseDTO;
 import com.gitgub.diogenesssantos.api.exception.TabelaTarifariaNaoAtivaException;
 import com.gitgub.diogenesssantos.api.model.FaixaTarifaria;
 import com.gitgub.diogenesssantos.api.repository.FaixaTarifariaRepository;
@@ -39,7 +39,7 @@ public class CalculoService {
 
         int restante = consumo;
         BigDecimal valorTotal = BigDecimal.ZERO;
-        List<DetalheFaixaDTO> detalhamento = new ArrayList<>();
+        List<DetalheFaixaResponseDTO> detalhamento = new ArrayList<>();
 
         for (FaixaTarifaria faixa : faixas) {
             if (restante <= 0) break;
@@ -52,8 +52,8 @@ public class CalculoService {
             if (m3Cobrado > 0) {
                 BigDecimal subtotal = faixa.getValorUnitario().multiply(BigDecimal.valueOf(m3Cobrado));
                 valorTotal = valorTotal.add(subtotal);
-                detalhamento.add(new DetalheFaixaDTO(
-                        new FaixaDTO(faixaInicio, faixaFim),
+                detalhamento.add(new DetalheFaixaResponseDTO(
+                        new FaixaResponseDTO(faixaInicio, faixaFim),
                         m3Cobrado,
                         faixa.getValorUnitario(),
                         subtotal

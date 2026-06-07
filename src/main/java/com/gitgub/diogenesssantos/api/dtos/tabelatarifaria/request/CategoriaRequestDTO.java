@@ -1,4 +1,4 @@
-package com.gitgub.diogenesssantos.api.dtos.tabelatarifaria;
+package com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.request;
 
 import com.gitgub.diogenesssantos.api.validation.CategoriaBeanValidation;
 

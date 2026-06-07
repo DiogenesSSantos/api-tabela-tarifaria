@@ -1,9 +1,9 @@
 package com.gitgub.diogenesssantos.api.service;
 
 
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.CategoriaRequestDTO;
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.FaixaRequestDTO;
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaRequestDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.request.CategoriaRequestDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.request.FaixaRequestDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.request.TabelaTarifariaRequestDTO;
 import com.gitgub.diogenesssantos.api.exception.FaixaTarifariaException;
 import com.gitgub.diogenesssantos.api.exception.FaixaTarifariaValidacaoCamposException;
 import com.gitgub.diogenesssantos.api.model.Categoria;
@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class FaixaTarifariaService {

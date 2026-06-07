@@ -1,4 +1,4 @@
-package com.gitgub.diogenesssantos.api.dtos.tabelatarifaria;
+package com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

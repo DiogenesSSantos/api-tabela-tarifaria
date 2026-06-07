@@ -2,8 +2,8 @@ package com.gitgub.diogenesssantos.api.controller;
 
 import com.gitgub.diogenesssantos.api.assemble.AssembleTabelaTarifaria;
 import com.gitgub.diogenesssantos.api.docs.TabelaTarifariaDocumentacaoOpenAPI;
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaRequestDTO;
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaResponseDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.request.TabelaTarifariaRequestDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.response.TabelaTarifariaResponseDTO;
 import com.gitgub.diogenesssantos.api.model.TabelaTarifaria;
 import com.gitgub.diogenesssantos.api.service.TabelaTarifariaService;
 import jakarta.validation.Valid;

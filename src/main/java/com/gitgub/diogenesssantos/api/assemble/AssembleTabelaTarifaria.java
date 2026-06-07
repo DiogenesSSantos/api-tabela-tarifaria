@@ -1,7 +1,7 @@
 package com.gitgub.diogenesssantos.api.assemble;
 
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.FaixaTarifariaResponseDTO;
-import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.TabelaTarifariaResponseDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.response.FaixaTarifariaResponseDTO;
+import com.gitgub.diogenesssantos.api.dtos.tabelatarifaria.response.TabelaTarifariaResponseDTO;
 import com.gitgub.diogenesssantos.api.model.FaixaTarifaria;
 import com.gitgub.diogenesssantos.api.model.TabelaTarifaria;
 
