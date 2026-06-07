@@ -35,7 +35,7 @@ public interface TabelaTarifariaDocumentacaoOpenAPI {
                     ),
                     @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
             })
-    public ResponseEntity<List<TabelaTarifariaResponseDTO>> buscarTodasTabelas();
+    ResponseEntity<List<TabelaTarifariaResponseDTO>> buscarTodasTabelas();
 
 
 
@@ -82,10 +82,10 @@ public interface TabelaTarifariaDocumentacaoOpenAPI {
                     ),
                     @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
             })
-    public ResponseEntity<TabelaTarifaria> criarTabela(@RequestBody(
+    ResponseEntity<TabelaTarifariaResponseDTO> criarTabela(@RequestBody(
             content = @Content(mediaType = "application/json",
                     schema = @Schema(example = TabelaTarifariaRepresentacaoOpenAPI.CORPO_EXEMPLO_POST)))
-                                                       TabelaTarifariaRequestDTO tabelaTarifariaRequest);
+                                                           TabelaTarifariaRequestDTO tabelaTarifariaRequest);
 
 
 
@@ -134,10 +134,10 @@ public interface TabelaTarifariaDocumentacaoOpenAPI {
                     ),
                     @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
             })
-    public ResponseEntity<List<TabelaTarifaria>> criarTabelaEmLote(@RequestBody(
+    ResponseEntity<List<TabelaTarifariaResponseDTO>> criarTabelaEmLote(@RequestBody(
             content = @Content(mediaType = "application/json",
                     schema = @Schema(example = TabelaTarifariaRepresentacaoOpenAPI.CORPO_EXEMPLO_POST_LOTE)))
-                                                                   List<TabelaTarifariaRequestDTO> tabelaTarifariaRequests);
+                                                                       List<TabelaTarifariaRequestDTO> tabelaTarifariaRequests);
 
 
 
@@ -173,6 +173,6 @@ public interface TabelaTarifariaDocumentacaoOpenAPI {
                     @ApiResponse(description = "Success", responseCode = "204", content = @Content),
                     @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
             })
-    public ResponseEntity<TabelaTarifariaResponseDTO> deletaTabelaPorId(Long id);
+    ResponseEntity<TabelaTarifariaResponseDTO> deletaTabelaPorId(Long id);
 
 }

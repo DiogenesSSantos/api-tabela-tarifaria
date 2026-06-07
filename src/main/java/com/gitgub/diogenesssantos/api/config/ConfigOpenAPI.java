@@ -21,7 +21,7 @@ public class ConfigOpenAPI {
                                 .version("1.0.0")
                                 .contact(new Contact().url("https://diogenesssantos.github.io/meu-portfolio/")
                                         .name("Diogenes S Santos").email("diogenescontatoofficial@hotmail.com"))
-                                .summary("Gerenciador de tarefas")
+                                .summary("Gerenciador de tarifas")
                                 .license(new License().name("MIT License").url("https://opensource.org/licenses/MIT")))
                 .externalDocs(new ExternalDocumentation().description("GitHub")
                         .url("https://github.com/DiogenesSSantos/api-tabela-tarifaria"));

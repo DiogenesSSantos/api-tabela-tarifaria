@@ -36,12 +36,12 @@ public class CalculoService {
         var categoria = calculoRequestDTO.categoria();
         var consumo = calculoRequestDTO.consumo();
 
-        TabelaTarifaria tabela = tabelaRepo.findByAtivoTrueOrderByDataVigenciaDesc()
+        tabelaRepo.findByAtivoTrueOrderByDataVigenciaDesc()
                 .stream().findFirst()
                 .orElseThrow(() ->
                         new TabelaTarifariaNaoAtivaException("Nenhuma tabela tarifaria ativa não banco de dados."));
 
-        List<FaixaTarifaria> faixas = faixaRepo.findByTabelaAndCategoriaOrderByOrdemAsc(tabela, categoria);
+        List<FaixaTarifaria> faixas = faixaRepo.findFaixasAtivasByCategoria(categoria);
         FaixaTarifaria ultimaFaixa = faixas.getLast();
 
         int restante = consumo;

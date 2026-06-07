@@ -31,7 +31,7 @@ public class TabelaTarifariaController implements TabelaTarifariaDocumentacaoOpe
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TabelaTarifariaResponseDTO> buscarPorId(@PathVariable (name = "id", required =  true) Long id) {
+    public ResponseEntity<TabelaTarifariaResponseDTO> buscarPorId(@PathVariable (name = "id") Long id) {
         var tabelaTarifa = service.buscarPorId(id);
         var tabelaTarifaDTO = AssembleTabelaTarifaria.modelToDTO(tabelaTarifa);
         return ResponseEntity.ok().body(tabelaTarifaDTO);
@@ -39,16 +39,18 @@ public class TabelaTarifariaController implements TabelaTarifariaDocumentacaoOpe
 
 
     @PostMapping
-    public ResponseEntity<TabelaTarifaria> criarTabela(@RequestBody @Valid TabelaTarifariaRequestDTO tabelaTarifariaRequest) {
-        TabelaTarifaria tabela = service.salvarTabela(tabelaTarifariaRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(tabela);
+    public ResponseEntity<TabelaTarifariaResponseDTO>  criarTabela(@RequestBody @Valid TabelaTarifariaRequestDTO tabelaTarifariaRequest) {
+        TabelaTarifaria tabelaTarifariaBD = service.salvarTabela(tabelaTarifariaRequest);
+        var tabelaTarifaDTO = AssembleTabelaTarifaria.modelToDTO(tabelaTarifariaBD);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tabelaTarifaDTO);
     }
 
     @PostMapping("/lote")
-    public ResponseEntity< List<TabelaTarifaria>> criarTabelaEmLote(@RequestBody
+    public ResponseEntity<List<TabelaTarifariaResponseDTO>> criarTabelaEmLote(@RequestBody
                                                            List<TabelaTarifariaRequestDTO> tabelaTarifariaRequests) {
-        List<TabelaTarifaria> tabelas = service.salvarTabelaEmLote(tabelaTarifariaRequests);
-        return ResponseEntity.status(HttpStatus.CREATED).body(tabelas);
+        List<TabelaTarifaria> tabelaTarifariaListBD = service.salvarTabelaEmLote(tabelaTarifariaRequests);
+        var listtabelaTarifaDTO = AssembleTabelaTarifaria.listModelToLisDTO(tabelaTarifariaListBD);
+        return ResponseEntity.status(HttpStatus.CREATED).body(listtabelaTarifaDTO);
     }
 
     @DeleteMapping("/{id}")
