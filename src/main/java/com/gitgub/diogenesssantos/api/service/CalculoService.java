@@ -4,7 +4,6 @@ import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoRequestDTO;
 import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoResponseDTO;
 import com.gitgub.diogenesssantos.api.dtos.calculos.DetalheFaixaDTO;
 import com.gitgub.diogenesssantos.api.dtos.calculos.FaixaDTO;
-import com.gitgub.diogenesssantos.api.exception.CalculoRequestException;
 import com.gitgub.diogenesssantos.api.exception.TabelaTarifariaNaoAtivaException;
 import com.gitgub.diogenesssantos.api.model.FaixaTarifaria;
 import com.gitgub.diogenesssantos.api.repository.FaixaTarifariaRepository;
@@ -31,7 +30,6 @@ public class CalculoService {
     @Transactional
     public CalculoResponseDTO calcular(CalculoRequestDTO calculoRequestDTO) {
         validaExisteTabelaOuThrow();
-//        validaCalculoRequest(calculoRequestDTO);
         var categoria = calculoRequestDTO.categoria();
         var consumo = calculoRequestDTO.consumo();
 
@@ -69,13 +67,6 @@ public class CalculoService {
         return new CalculoResponseDTO(categoria, consumo, valorTotal, detalhamento);
 
     }
-
-//    private void validaCalculoRequest(CalculoRequestDTO calculoRequestDTO) {
-//        if (calculoRequestDTO == null || calculoRequestDTO.consumo() == null || calculoRequestDTO.categoria() == null) {
-//            throw new CalculoRequestException("Erro no corpo JSON");
-//
-//        }
-//    }
 
     private void validaExisteTabelaOuThrow () {
         if (tabelaRepo.existsByAtivoTrue()) return;

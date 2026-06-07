@@ -18,7 +18,7 @@ public class ConfigOpenAPI {
         return new OpenAPI().info(
                         new Info().title("api-tabela-tarifaria")
                                 .description("API-REST para gerenciar e calcular tarifas de água...")
-                                .version("1.0.0")
+                                .version("1.7.0")
                                 .contact(new Contact().url("https://diogenesssantos.github.io/meu-portfolio/")
                                         .name("Diogenes S Santos").email("diogenescontatoofficial@hotmail.com"))
                                 .summary("Gerenciador de tarifas")
