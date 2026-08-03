@@ -1,4 +1,4 @@
-package com.gitgub.diogenesssantos.api.exception;
+package com.gitgub.diogenesssantos.api.acleanarquitecture.application;
 
 public class TabelaTarifariaNaoLocalizadaException extends RuntimeException{
 

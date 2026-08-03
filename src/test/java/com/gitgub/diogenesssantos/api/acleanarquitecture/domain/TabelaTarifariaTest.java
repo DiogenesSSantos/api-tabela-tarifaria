@@ -1,7 +1,5 @@
 package com.gitgub.diogenesssantos.api.acleanarquitecture.domain;
 
-import com.gitgub.diogenesssantos.api.exception.FaixaTarifariaException;
-import com.gitgub.diogenesssantos.api.exception.FaixaTarifariaValidacaoCamposException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

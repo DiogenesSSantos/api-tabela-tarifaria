@@ -1,7 +1,10 @@
 package com.gitgub.diogenesssantos.api.exceptionhandler;
 
 
-import com.gitgub.diogenesssantos.api.exception.*;
+import com.gitgub.diogenesssantos.api.acleanarquitecture.application.TabelaTarifariaNaoAtivaException;
+import com.gitgub.diogenesssantos.api.acleanarquitecture.application.TabelaTarifariaNaoLocalizadaException;
+import com.gitgub.diogenesssantos.api.acleanarquitecture.domain.FaixaTarifariaException;
+import com.gitgub.diogenesssantos.api.acleanarquitecture.domain.FaixaTarifariaValidacaoCamposException;
 import com.gitgub.diogenesssantos.api.model.Categoria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +12,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import tools.jackson.core.exc.StreamReadException;
 import tools.jackson.databind.exc.InvalidFormatException;
 
 import java.time.LocalDateTime;

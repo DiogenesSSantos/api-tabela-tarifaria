@@ -4,7 +4,7 @@ import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoRequestDTO;
 import com.gitgub.diogenesssantos.api.dtos.calculos.CalculoResponseDTO;
 import com.gitgub.diogenesssantos.api.dtos.calculos.DetalheFaixaResponseDTO;
 import com.gitgub.diogenesssantos.api.dtos.calculos.FaixaResponseDTO;
-import com.gitgub.diogenesssantos.api.exception.TabelaTarifariaNaoAtivaException;
+import com.gitgub.diogenesssantos.api.acleanarquitecture.application.TabelaTarifariaNaoAtivaException;
 import com.gitgub.diogenesssantos.api.model.FaixaTarifaria;
 import com.gitgub.diogenesssantos.api.repository.FaixaTarifariaRepository;
 import com.gitgub.diogenesssantos.api.repository.TabelaTarifariaRepository;

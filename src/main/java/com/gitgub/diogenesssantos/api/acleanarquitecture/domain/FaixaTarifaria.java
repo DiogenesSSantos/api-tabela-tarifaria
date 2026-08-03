@@ -1,7 +1,5 @@
 package com.gitgub.diogenesssantos.api.acleanarquitecture.domain;
 
-import com.gitgub.diogenesssantos.api.exception.FaixaTarifariaValidacaoCamposException;
-
 import java.math.BigDecimal;
 import java.util.Objects;
 

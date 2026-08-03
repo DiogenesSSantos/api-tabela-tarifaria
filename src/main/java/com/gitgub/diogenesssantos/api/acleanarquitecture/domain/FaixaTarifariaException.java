@@ -1,4 +1,4 @@
-package com.gitgub.diogenesssantos.api.exception;
+package com.gitgub.diogenesssantos.api.acleanarquitecture.domain;
 
 public class FaixaTarifariaException  extends  RuntimeException{
 
